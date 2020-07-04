@@ -12,7 +12,8 @@ class App extends Component {
   render() {
     return (
       <div>
-    
+        <h1>Finding Falcone!</h1>
+        <h3>Select planets you want to search in: </h3>
         <SelectionDiv />
         
       </div>

@@ -1,12 +1,22 @@
 import React from 'react';
 
 class SelectPlanet extends React.Component{
-  
+  constructor(props){
+    super(props);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  handleChange(e){
+    console.log(e.target.value);
+    var planetData = this.props.planetData.filter(planet=>planet.name!==e.target.value);
+    this.props.planetData = planetData;
+    console.log(this.props.planetData);
+  }
   render(){
     return <div>
-    <select>
+    <select onChange={this.handleChange}>
+      <option disabled selected>Select</option>
       {this.props.planetData.map(planet => {
-        return <option key={planet.name} value={planet.distance} label={planet.name}>{planet.name}</option>
+        return <option key={planet.name} value={planet.name} label={planet.name}>{planet.name}</option>
       })}
     </select>
     </div>
@@ -24,7 +34,6 @@ class PlanetList extends React.Component{
     fetch(this.props.url)
     .then(res => res.json())
     .then(data=>{
-      console.log(data);
       this.setState({
         planets:data
       })
