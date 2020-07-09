@@ -6,10 +6,7 @@ class SelectPlanet extends React.Component{
     this.handleChange = this.handleChange.bind(this);
   }
   handleChange(e){
-    console.log(e.target.value);
-    var planetData = this.props.planetData.filter(planet=>planet.name!==e.target.value);
-    this.props.planetData = planetData;
-    console.log(this.props.planetData);
+    this.props.parentCallback(e.target.value);
   }
   render(){
     return <div>
@@ -27,7 +24,8 @@ class PlanetList extends React.Component{
   constructor(props){
     super(props);
     this.state={
-      planets: []
+      planets: [],
+      planet1: ''
     }
   }
   componentDidMount(){
@@ -39,9 +37,16 @@ class PlanetList extends React.Component{
       })
     });
   }
+  callbackFunction = (childData) => {
+    var planetData = this.state.planets.filter(planet => planet.name !== childData);
+    this.setState({
+      planets: planetData,
+      planet1: childData
+    })
+  }
   render(){
     return <div className="row">
-    <div className="col-md-3"><SelectPlanet planetData={this.state.planets}/></div>
+    <div className="col-md-3"><SelectPlanet planetData={this.state.planets} parentCallback = {this.callbackFunction}/></div>
     <div className="col-md-3"><SelectPlanet planetData={this.state.planets}/></div>
     <div className="col-md-3"><SelectPlanet planetData={this.state.planets}/></div>
     <div className="col-md-3"><SelectPlanet planetData={this.state.planets}/></div>
