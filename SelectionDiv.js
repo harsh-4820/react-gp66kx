@@ -4,9 +4,21 @@ class SelectPlanet extends React.Component{
   constructor(props){
     super(props);
     this.handleChange = this.handleChange.bind(this);
+    this.state={
+      isSelected: false
+    }
   }
   handleChange(e){
     this.props.parentCallback(e.target.value);
+    this.setState({
+      isSelected: true
+    });
+  }
+  shouldComponentUpdate(nextProps,nextState){
+    if(nextState.isSelected){
+      return false;
+    }
+    return true;
   }
   render(){
     return <div>
@@ -25,7 +37,7 @@ class PlanetList extends React.Component{
     super(props);
     this.state={
       planets: [],
-      planet1: ''
+      selectedPlanets: []
     }
   }
   componentDidMount(){
@@ -39,17 +51,19 @@ class PlanetList extends React.Component{
   }
   callbackFunction = (childData) => {
     var planetData = this.state.planets.filter(planet => planet.name !== childData);
+    let selectedPlanets = this.state.selectedPlanets;
+    selectedPlanets.push(childData)
     this.setState({
       planets: planetData,
-      planet1: childData
+      selectedPlanets: selectedPlanets
     })
   }
   render(){
     return <div className="row">
     <div className="col-md-3"><SelectPlanet planetData={this.state.planets} parentCallback = {this.callbackFunction}/></div>
-    <div className="col-md-3"><SelectPlanet planetData={this.state.planets}/></div>
-    <div className="col-md-3"><SelectPlanet planetData={this.state.planets}/></div>
-    <div className="col-md-3"><SelectPlanet planetData={this.state.planets}/></div>
+    <div className="col-md-3"><SelectPlanet planetData={this.state.planets} parentCallback = {this.callbackFunction}/></div>
+    <div className="col-md-3"><SelectPlanet planetData={this.state.planets} parentCallback = {this.callbackFunction}/></div>
+    <div className="col-md-3"><SelectPlanet planetData={this.state.planets} parentCallback = {this.callbackFunction}/></div>
     </div>
   }
 }
